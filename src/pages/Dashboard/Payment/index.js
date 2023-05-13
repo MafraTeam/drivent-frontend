@@ -1,6 +1,7 @@
 import { useState, useContext } from 'react';
 import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
+import { OptionBox } from '../../../layouts/OptionBox.js';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -39,34 +40,4 @@ const Container = styled.div`
 
 const StyledTypography = styled(Typography)`
   margin-bottom: 20px!important;
-`;
-
-const OptionBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  box-sizing: border-box;
-  width: 145px;
-  height: 145px;
-  border: 1px solid #CECECE;
-  border-radius: 20px;
-  font-family: 'Roboto';
-  margin-right: 24px;
-
-  h1{
-    font-weight: 400;
-    font-size: 17px;
-    text-align: center;
-    color: #454545;
-    margin-bottom: 5px;
-  }
-
-  h2{
-  font-weight: 400;
-  font-size: 15px;
-  line-height: 16px;
-  text-align: center;
-  color: #898989;
-  }
 `;
