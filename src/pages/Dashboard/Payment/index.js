@@ -61,7 +61,7 @@ export default function Payment() {
       {includesHotel !== '' ?
         <>
           <StyledTypography variant="h6" style={{ 'color': '#8E8E8E', 'font-weight': '400', 'margin-top': '32px' }}>
-            Fechado! O total ficou em <span style={{ 'font-weight': '500' }}>R$ {total}.</span> Agora é só confirmar:
+             Fechado! O total ficou em <span style={{ 'font-weight': '500' }}>R$ {total}.</span> Agora é só confirmar:
           </StyledTypography>
           <ReserveButton><p>RESERVAR INGRESSO</p></ReserveButton>
         </>
