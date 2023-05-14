@@ -1,8 +1,7 @@
 import { useState, useContext } from 'react';
-import styled from 'styled-components';
-import Typography from '@material-ui/core/Typography';
 import { OptionBox } from '../../../layouts/OptionBox.js';
 import { useNavigate } from 'react-router-dom';
+import { Container, Options, Option, Button, Row, Column, StyledTypography, ReserveButton } from '../../../components/Dashboard/Payments';
 
 export default function Payment() {
   const navigate = useNavigate();
@@ -10,6 +9,8 @@ export default function Payment() {
   const [pricePr, setPricePr] = useState('X');
   const [priceOn, setPriceOn] = useState('Y');
   const [type, setType] = useState('');
+  const [includesHotel, setincludesHotel] = useState('');
+  const [total, setTotal] = useState(0);
 
   return (
     <>
@@ -39,36 +40,32 @@ export default function Payment() {
           </ReserveButton>
         </Column>
       }
+
+      {type == 'presencial' ? 
+        <>
+          <StyledTypography variant="h6" style={{ 'color': '#8E8E8E', 'font-weight': '400', 'margin-top': '32px' }}>Ótimo! Agora escolha sua modalidade de hospedagem</StyledTypography>
+          <Row>
+            <OptionBox onClick={() => setincludesHotel(false)} style={{ 'background-color': includesHotel === false ? '#FFEED2' : 'white' }}>
+              <p>Sem hotel</p>
+              <p className='price'> R$XXXX,00</p>
+            </OptionBox>
+            <OptionBox onClick={() => setincludesHotel(true)} style={{ 'background-color': includesHotel === true ? '#FFEED2' : 'white' }}>
+              <p>Com hotel</p>
+              <p className='price'> R$XXXX,00</p>
+            </OptionBox>
+          </Row>
+        </> 
+        : ''
+      }
+
+      {includesHotel !== '' ? 
+        <>
+          <StyledTypography variant="h6" style={{ 'color': '#8E8E8E', 'font-weight': '400', 'margin-top': '32px' }}>Fechado! O total ficou em ${total}. Agora é só confirmar!</StyledTypography>
+          <ReserveButton><p>RESERVAR INGRESSO</p></ReserveButton>
+        </>
+        : ''
+      }
+      
     </>
   );
 }
-
-const Row = styled.div` 
-  display: flex;
-`;
-
-const Column = styled.div` 
-  display: flex;
-  flex-direction: column;
-`;
-
-const StyledTypography = styled(Typography)`
-  margin-bottom: 20px!important;
-`;
-
-const ReserveButton = styled.div`
-  width: 162px;
-  height: 37px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #E0E0E0;
-  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.25);
-  border-radius: 4px;
-  font-family: 'Roboto';
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 16px;
-  text-align: center;
-  color: #000000;
-`;
