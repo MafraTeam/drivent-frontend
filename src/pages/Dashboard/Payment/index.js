@@ -60,7 +60,7 @@ export default function Payment() {
           <StyledTypography variant="h6" style={{ 'color': '#8E8E8E', 'font-weight': '400', 'margin-top': '32px' }}>
             Fechado! O price ficou em <span style={{ 'font-weight': '500' }}>R$ {priceOn}.</span> Agora é só confirmar:
           </StyledTypography>
-          <ReserveButton>
+          <ReserveButton onClick={() => sendData()}>
             RESERVAR INGRESSO
           </ReserveButton>
         </Column>
