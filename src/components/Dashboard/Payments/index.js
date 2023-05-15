@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 
 export const Button = styled.button`
@@ -66,4 +67,58 @@ export const WithoutEnrollment = styled.div`
     line-height: 23px;
     color: #8e8e8e;
   }
+`;
+
+export const TicketBox = styled(Box)`
+  margin-top: 30px;
+`;
+
+export const Text = styled.p`
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: ${(props) => props.size};
+  color: ${(props) => props.color};
+`;
+
+export const TicketSelectedBox = styled(Box)`
+  margin-top: 30px;
+  width: fit-content;
+  padding: 34px 66px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  background-color: #ffeed2;
+  border-radius: 20px;
+`;
+
+export const PaymentBox = styled(Box)`
+  margin-top: 30px;
+`;
+
+export const CreditCardBox = styled(Box)`
+  margin-top: 40px;
+  width: fit-content;
+  display: flex;
+  gap: 3vw;
+`;
+
+export const CreditCardForm = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+`;
+
+export const CreditCardFlexBox = styled(Box)`
+  display: flex;
+  gap: 10px;
+`;
+
+export const CreditCardFormButton = styled.button`
+  border: none;
+  margin-top: 40px;
+  text-transform: uppercase;
+  padding: 15px 30px;
+  cursor: pointer;
 `;

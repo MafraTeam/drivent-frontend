@@ -20,7 +20,6 @@ export default function Hotel() {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(promise.data);
       setTicket(promise.data);
     } catch (error) {
       console.log(error.message);
