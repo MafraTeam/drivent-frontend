@@ -1,7 +1,8 @@
 import { useState, useContext } from 'react';
 import { OptionBox } from '../../../layouts/OptionBox.js';
 import { useNavigate } from 'react-router-dom';
-import { Row, Column, StyledTypography, ReserveButton } from '../../../components/Dashboard/Payments';
+import { Row, Column, StyledTypography, ReserveButton, WithoutEnrollment } from '../../../components/Dashboard/Payments';
+import useEnrollment from '../../../hooks/api/useEnrollment.js';
 
 export default function Payment() {
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ export default function Payment() {
   const [type, setType] = useState('');
   const [includesHotel, setIncludesHotel] = useState('');
   const [price, setPrice] = useState(0);
+  const { enrollment } = useEnrollment();
 
   function withHotel() {
     setIncludesHotel(true);
@@ -35,6 +37,18 @@ export default function Payment() {
       price,
     };
     navigate('*', data);
+  }
+
+  if (!enrollment) {
+    return (
+      <>
+        <StyledTypography>Ingresso e Pagamento</StyledTypography>
+        <WithoutEnrollment>
+          <p>Você precisa completar sua inscrição antes de prosseguir pra escolha de ingresso</p>
+
+        </WithoutEnrollment>
+      </>
+    );
   }
 
   return (

@@ -48,3 +48,21 @@ export const ReserveButton = styled.div`
       text-align: center;
       color: #000000;
 `;
+
+export const WithoutEnrollment = styled.div`
+      height: calc(100% - 40px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      p{
+            height: 46px;
+            width: 388px;
+            text-align: center;
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 20px;
+            line-height: 23px;
+            color: #8e8e8e;
+      }
+`;
