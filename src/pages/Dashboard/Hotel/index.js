@@ -3,35 +3,29 @@ import styled from 'styled-components';
 import useToken from '../../../hooks/useToken';
 import axios from 'axios';
 import HotelCard from '../../../components/Hotel/HotelCard';
+import { Typography } from '@material-ui/core';
+import Room from '../../../components/Room/Room';
 
 export default function Hotel() {
-  const [teste, setTeste] = useState(false);
+  const [ticket, setTicket] = useState();
+  const [hotels, setHotels] = useState([]);
+  const [selectedHotel, setSelectedHotel] = useState(0);
+  const [rooms, setRooms] = useState([]);
   const token = useToken();
 
-  const arrayHoteisTeste = [
-    {
-      id: 1,
-      name: 'Driven Resort',
-      image: 'https://img.freepik.com/fotos-gratis/salao-de-beleza-spa-com-vista-para-a-praia_53876-31335.jpg',
-      createdAt: '2023-05-14T05:22:25.397Z',
-      updatedAt: '2023-05-14T05:22:25.399Z',
-    },
-    {
-      id: 2,
-      name: 'Driven Palace',
-      image:
-        'https://img.freepik.com/fotos-gratis/tipo-complexo-de-entretenimento-o-popular-resort-com-piscinas-e-parques-aquaticos-na-turquia-hotel-de-luxo-recorrer_146671-18827.jpg',
-      createdAt: '2023-05-14T05:22:25.408Z',
-      updatedAt: '2023-05-14T05:22:25.409Z',
-    },
-    {
-      id: 3,
-      name: 'Driven World',
-      image: 'https://img.freepik.com/fotos-gratis/viagens-maritimas-moderno-ninguem-infinito_1203-4520.jpg',
-      createdAt: '2023-05-14T05:22:25.415Z',
-      updatedAt: '2023-05-14T05:22:25.417Z',
-    },
-  ];
+  async function getTicket() {
+    try {
+      const promise = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/tickets`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(promise.data)
+      setTicket(promise.data);
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
 
   async function getHotels() {
     try {
@@ -40,36 +34,71 @@ export default function Hotel() {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(promise.data);
+      setHotels(promise.data);
     } catch (error) {
       console.log(error.message);
     }
   }
 
-  // useEffect(() => {
-  //   getHotels();
-  // }, []);
+  async function selectHotel(id) {
+    try {
+      const promise = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/hotels/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setSelectedHotel(id);
+      setRooms(promise.data.Rooms);
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
+  useEffect(() => {
+    getTicket();
+    getHotels();
+  }, []);
 
   return (
     <>
       <Title>Escolha de hotel e Quarto</Title>
-      {/* {teste ? (
-        <ContainerAlert>
-          <h2>Sua modalidade de ingresso não inclui hospedagem. Prossiga para a escolha de atividades</h2>
-        </ContainerAlert>
-      ) : (
+      {ticket?.status !== 'PAID' && (
         <ContainerAlert>
           <h2>Você precisa ter confirmado pagamento antes de fazer a escolha de hospedagem</h2>
         </ContainerAlert>
-      )} */}
-      <ContainerHotels>
-        {arrayHoteisTeste.map((hotel) => (
-          <HotelCard hotel={hotel} />
-        ))}
-      </ContainerHotels>
+      )}
+      {!ticket?.TicketType?.includesHotel && (
+        <ContainerAlert>
+          <h2>Sua modalidade de ingresso não inclui hospedagem. Prossiga para a escolha de atividades</h2>
+        </ContainerAlert>
+      )}
+      {
+        <>
+          <SubTitles>Primeiro, escolha seu hotel</SubTitles>
+          <ContainerHotels>
+            {hotels?.map((hotel, index) => (
+              <HotelCard hotel={hotel} key={index} selectHotel={selectHotel} />
+            ))}
+          </ContainerHotels>
+        </>
+      }
+      {selectedHotel !== 0 && (
+        <RoomsContainer>
+          <SubTitles>Ótima pedida! Agora escolha seu quarto</SubTitles>
+          <RoomsStyled>
+            {rooms?.map((room, index) => (
+              <Room room={room} key={index} />
+            ))}
+          </RoomsStyled>
+        </RoomsContainer>
+      )}
     </>
   );
 }
+
+const SubTitles = styled(Typography)`
+  margin-bottom: 20px !important;
+`;
 
 const Title = styled.h1`
   font-style: normal;
@@ -100,4 +129,17 @@ const ContainerHotels = styled.div`
   width: 860px;
   flex-wrap: wrap;
   align-items: center;
+`;
+
+const RoomsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 52px;
+`;
+
+const RoomsStyled = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 32px;
+  gap: 17px;
 `;

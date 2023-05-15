@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 
-export default function HotelCard({ hotel }) {
-  const { name, image } = hotel;
+export default function HotelCard({ hotel, selectHotel }) {
+  const { id, name, image } = hotel;
+
   return (
-    <HotelCardStyled>
+    <HotelCardStyled onClick={() => selectHotel(id)}>
       <img src={image} alt="hotel" />
       <h2>{name}</h2>
       <h3>Tipos de acomodação</h3>
