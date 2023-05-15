@@ -42,10 +42,9 @@ export default function Payment() {
   if (!enrollment) {
     return (
       <>
-        <StyledTypography>Ingresso e Pagamento</StyledTypography>
+        <StyledTypography variant="h4">Ingresso e pagamento</StyledTypography>
         <WithoutEnrollment>
           <p>Você precisa completar sua inscrição antes de prosseguir pra escolha de ingresso</p>
-
         </WithoutEnrollment>
       </>
     );
