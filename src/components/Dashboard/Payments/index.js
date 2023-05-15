@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
+import { AiFillCheckCircle } from 'react-icons/ai';
 
 export const Button = styled.button`
   background-color: #e0e0e0;
@@ -76,7 +77,7 @@ export const TicketBox = styled(Box)`
 export const Text = styled.p`
   font-family: 'Roboto';
   font-style: normal;
-  font-weight: 400;
+  font-weight: ${(props) => (props.weight ? props.weight : 400)};
   font-size: ${(props) => props.size};
   color: ${(props) => props.color};
 `;
@@ -121,4 +122,27 @@ export const CreditCardFormButton = styled.button`
   text-transform: uppercase;
   padding: 15px 30px;
   cursor: pointer;
+`;
+
+export const PayedBox = styled(Box)`
+  margin-top: 30px;
+`;
+
+export const ConfirmationTextBox = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
+export const ConfirmationBox = styled(Box)`
+  margin-top: 30px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+`;
+
+export const ConfirmationIcon = styled(AiFillCheckCircle)`
+  color: #36b853;
+  width: 50px;
+  height: 50px;
 `;
