@@ -13,7 +13,7 @@ export default function Room({ room }) {
       <h1>{name.slice(-3)}</h1>
       <div>
         {icons.map((item, index) => (
-          <FreePlace key={index}/>
+          <FreePlace key={index} />
         ))}
       </div>
     </RoomStyled>
