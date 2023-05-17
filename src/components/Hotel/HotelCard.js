@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 
-export default function HotelCard({ hotel, selectHotel }) {
+export default function HotelCard({ hotel, selectHotel, selectedHotel }) {
   const { id, name, image } = hotel;
 
   return (
-    <HotelCardStyled onClick={() => selectHotel(id)}>
+    <HotelCardStyled onClick={() => selectHotel(id)} selectedHotel={selectedHotel} hotelId={id}>
       <img src={image} alt="hotel" />
       <h2>{name}</h2>
       <h3>Tipos de acomodação</h3>
@@ -18,7 +18,7 @@ export default function HotelCard({ hotel, selectHotel }) {
 const HotelCardStyled = styled.div`
   width: 196px;
   min-height: 300px;
-  background-color: #ebebeb;
+  background-color: ${(props) => (props.selectedHotel === props.hotelId ? '#FFEED2' : '#EBEBEB')};
   border-radius: 10px;
   margin-top: 18px;
   padding: 16px 14px;
