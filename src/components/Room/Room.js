@@ -1,5 +1,5 @@
-import { FreePlace } from './Icon';
 import styled from 'styled-components';
+import Icon from '../../components/Room/Icon.js';
 
 export default function Room({ room }) {
   const { name, capacity } = room;
@@ -11,10 +11,9 @@ export default function Room({ room }) {
   return (
     <RoomStyled>
       <h1>{name.slice(-3)}</h1>
-      <div>
+      <div style={{ 'display': 'flex' }}>
         {icons.map((item, index) => (
-          <FreePlace key={index} />
-        ))}
+          <Icon />))}
       </div>
     </RoomStyled>
   );
