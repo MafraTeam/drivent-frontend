@@ -13,7 +13,7 @@ export default function Room({ room }) {
       <h1>{name.slice(-3)}</h1>
       <div style={{ 'display': 'flex' }}>
         {icons.map((item, index) => (
-          <Icon />))}
+          <Icon key={index}/>))}
       </div>
     </RoomStyled>
   );

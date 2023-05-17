@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useEffect, useState } from 'react';
 import useToken from '../../../hooks/useToken';
-import axios from 'axios';
-import HotelCard from '../../../components/Hotel/HotelCard';
 import { Typography } from '@material-ui/core';
 import Room from '../../../components/Room/Room';
+import hotelApi from '../../../services/hotelsApi';
+import ticketApi from '../../../services/ticketApi';
+import HotelCard from '../../../components/Hotel/HotelCard';
 
 export default function Hotel() {
   const [ticket, setTicket] = useState();
@@ -15,12 +16,8 @@ export default function Hotel() {
 
   async function getTicket() {
     try {
-      const promise = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/tickets`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setTicket(promise.data);
+      const ticketData = await ticketApi.getTicket(token);
+      setTicket(ticketData);
     } catch (error) {
       console.log(error.message);
     }
@@ -28,12 +25,8 @@ export default function Hotel() {
 
   async function getHotels() {
     try {
-      const promise = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/hotels`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setHotels(promise.data);
+      const hotelsData = await hotelApi.getHotels(token);
+      setHotels(hotelsData);
     } catch (error) {
       console.log(error.message);
     }
@@ -41,13 +34,9 @@ export default function Hotel() {
 
   async function selectHotel(id) {
     try {
-      const promise = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/hotels/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const RoomData = await hotelApi.getHotelRooms(token, id);
       setSelectedHotel(id);
-      setRooms(promise.data.Rooms);
+      setRooms(RoomData);
     } catch (error) {
       console.log(error.message);
     }
@@ -76,7 +65,7 @@ export default function Hotel() {
           <SubTitles>Primeiro, escolha seu hotel</SubTitles>
           <ContainerHotels>
             {hotels?.map((hotel, index) => (
-              <HotelCard hotel={hotel} key={index} selectHotel={selectHotel} />
+              <HotelCard hotel={hotel} key={index} selectHotel={selectHotel} selectedHotel={selectedHotel} />
             ))}
           </ContainerHotels>
         </>
