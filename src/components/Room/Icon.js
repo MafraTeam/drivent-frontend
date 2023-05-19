@@ -1,30 +1,24 @@
-import styled from 'styled-components';
-import { IoPerson, IoPersonOutline } from 'react-icons/io5';
 import { useState } from 'react';
+import { place } from './icontypes.js';
+import { useEffect } from 'react';
 
-export default function Icon() {
-  const [iconType, setIconType] = useState(<FreePlace />);
+export default function Icon({ index, handleClick, selected, availablePlacesInRoom }) {
+  const [iconType, setIconType] = useState(place.available);
 
-  function selectPlace() {
-    setIconType(<SelectedPlace />);
-  }
+  useEffect(() => {
+    //Se escolher 1a opçao de mapear:
+    if (selected === index) {
+      setIconType(place.selected);
+    }
+    if (availablePlacesInRoom[index] === true) {
+      setIconType(place.available);
+    }
+    if (availablePlacesInRoom[index] === false) {
+      setIconType(place.unavailable);
+    }
+  }, [selected]);
 
   return (
-    <div onClick={selectPlace}>{iconType}</div>
+    <div onClick={() => handleClick(index)}>{iconType}</div>
   );
 }
-
-const FreePlace = styled(IoPersonOutline)`
-  color: black;
-  font-size: 20px;
-`;
-
-const TakenPlace = styled(IoPerson)`
-  color: black;
-  font-size: 20px;
-`;
-
-const SelectedPlace = styled(IoPerson)`
-  color: #FF4791;
-  font-size: 20px;
-`;
