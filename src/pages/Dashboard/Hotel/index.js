@@ -55,11 +55,15 @@ export default function Hotel() {
     }
   }
 
+  function handleClickOnRoom(roomIndex) {
+    setSelectedRoom(roomIndex);
+  }
+
   useEffect(() => {
     checkCapacity();
     getTicket();
     getHotels();
-  }, [rooms]);
+  }, [rooms, selectedRoom]);
 
   return (
     <>
@@ -89,7 +93,7 @@ export default function Hotel() {
           <SubTitles>Ótima pedida! Agora escolha seu quarto</SubTitles>
           <RoomsStyled>
             {rooms?.map((room, index) => (
-              <Room room={room} key={index} background={fullRooms.includes(index) ? '#E9E9E9' : 'white'} />
+              <Room room={room} key={index} fullRooms={fullRooms} index={index} handleClickOnRoom={handleClickOnRoom} selectedRoom={selectedRoom}/>
             ))}
           </RoomsStyled>
         </RoomsContainer>
