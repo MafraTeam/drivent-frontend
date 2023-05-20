@@ -12,6 +12,7 @@ export default function Hotel() {
   const [hotels, setHotels] = useState([]);
   const [selectedHotel, setSelectedHotel] = useState(0);
   const [rooms, setRooms] = useState([]);
+  const [fullRooms, setFullRooms] = useState([]);
   const token = useToken();
 
   async function getTicket() {
@@ -32,11 +33,25 @@ export default function Hotel() {
     }
   }
 
+  function checkCapacity() {
+    const newList = [];
+    for (let i = 0; i < rooms.length; i++) {
+      if (rooms[i].capacity === rooms[i].takenPlaces) {
+        newList.push(rooms[i].id);
+      } else {
+        console.log('Rooms with vacancy:' + rooms[i].id);
+      }
+    }
+    setFullRooms(newList);
+  }
+
   async function selectHotel(id) {
     try {
       const RoomData = await hotelApi.getHotelRooms(token, id);
       setSelectedHotel(id);
       setRooms(RoomData);
+      checkCapacity();
+      console.log(RoomData);
     } catch (error) {
       console.log(error.message);
     }
@@ -73,9 +88,10 @@ export default function Hotel() {
       {selectedHotel !== 0 && (
         <RoomsContainer>
           <SubTitles>Ótima pedida! Agora escolha seu quarto</SubTitles>
+          <div onClick={() => console.log(fullRooms)}>test</div>
           <RoomsStyled>
             {rooms?.map((room, index) => (
-              <Room room={room} key={index} />
+              <Room room={room} key={index} background={fullRooms.includes(index) ? '#E9E9E9' : 'white'} />
             ))}
           </RoomsStyled>
         </RoomsContainer>
