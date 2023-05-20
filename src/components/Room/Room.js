@@ -2,19 +2,32 @@ import styled from 'styled-components';
 import Icon from '../../components/Room/Icon.js';
 import { useState, useEffect } from 'react';
 
-export default function Room({ room, fullRooms, background }) {
+export default function Room({ room, fullRooms, index, selectedRoom, handleClickOnRoom }) {
   const { name, capacity } = room;
   const icons = [];
   for (let i = 0; i < capacity; i++) {
     icons.push(1);
   }
   const [selectedPlace, setSelectedPlace] = useState('');
+  const [background, setBackground] = useState('white');
   //1)
   const availablePlacesInRoom = {         //mock 
     1: false,
     2: true,
     3: true
   };
+
+  useEffect(() => {
+    if (fullRooms.includes(index)) {
+      setBackground('#E9E9E9');
+    }
+    if (!fullRooms.includes(index)) {
+      setBackground('#00000');
+    }
+    if (selectedRoom === index) {
+      setBackground('#FFEED2');
+    }
+  }, [selectedRoom]);
 
   function handleClick(placeIndex) {
     if (selectedPlace === placeIndex) {
@@ -25,7 +38,7 @@ export default function Room({ room, fullRooms, background }) {
   }
 
   return (
-    <RoomStyled colorprop={background}>
+    <RoomStyled colorprop={background} onClick={() => handleClickOnRoom(index)}>
       <h1>{name.slice(-3)}</h1>
       <div style={{ 'display': 'flex' }}>
         {icons.map((item, index) => (
