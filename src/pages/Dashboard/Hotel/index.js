@@ -1,12 +1,19 @@
-import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import useToken from '../../../hooks/useToken';
-import { Typography } from '@material-ui/core';
 import Room from '../../../components/Room/Room';
 import hotelApi from '../../../services/hotelsApi';
 import ticketApi from '../../../services/ticketApi';
 import HotelCard from '../../../components/Hotel/HotelCard';
 import { ReserveButton } from '../../../components/Dashboard/Payments';
+import {
+  SubTitles,
+  Title,
+  ContainerAlert,
+  ContainerHotels,
+  RoomsContainer,
+  RoomsStyled,
+} from '../../../components/Hotel/HotelStyle';
+import { HotelCardStyled } from '../../../components/Hotel/HotelCard';
 
 export default function Hotel() {
   const [ticket, setTicket] = useState();
@@ -16,6 +23,11 @@ export default function Hotel() {
   const [fullRooms, setFullRooms] = useState([]);
   const token = useToken();
   const [selectedRoom, setSelectedRoom] = useState('');
+  const [showHotelResume, setShowHotelResume] = useState(false);
+  const [selectedRoomType, setSelectedRoomType] = useState('');
+  const [selectedRoomCapacity, setSelectedRoomCapacity] = useState('');
+  const [guests, setGuests] = useState(0);
+  const [roomName, setRoomName] = useState('');
 
   async function getTicket() {
     try {
@@ -61,6 +73,31 @@ export default function Hotel() {
     }
   }
 
+  function showResume() {
+    const bookingData = {
+      hotelId: selectedHotel,
+      roomId: selectedRoom,
+    };
+    const room = rooms[selectedRoom].name.replace('Room ', '');
+    setRoomName(room);
+    const otherPeople = rooms[selectedRoom].capacity - 1;
+    setGuests(otherPeople);
+    const capacity = rooms[selectedRoom].capacity;
+    if (capacity === 1) {
+      setSelectedRoomType('Single');
+      setSelectedRoomCapacity('Somente você');
+    }
+    else if (capacity === 2) {
+      setSelectedRoomType('Double');
+      setSelectedRoomCapacity('Você e mais ');
+    }
+    else if (capacity === 3) {
+      setSelectedRoomType('Triple');
+      setSelectedRoomCapacity('Você e mais ');
+    };
+    setShowHotelResume(true);
+  }
+
   useEffect(() => {
     checkCapacity();
     getTicket();
@@ -80,19 +117,19 @@ export default function Hotel() {
           <h2>Sua modalidade de ingresso não inclui hospedagem. Prossiga para a escolha de atividades</h2>
         </ContainerAlert>
       )}
-      {
+      {showHotelResume === false ?
         <>
-          <SubTitles>Primeiro, escolha seu hotel</SubTitles>
+          <SubTitles style={{ 'color': '#8e8e8e', 'margin-top': '20px' }}>Primeiro, escolha seu hotel</SubTitles>
           <ContainerHotels>
             {hotels?.map((hotel, index) => (
               <HotelCard hotel={hotel} key={index} selectHotel={selectHotel} selectedHotel={selectedHotel} />
             ))}
           </ContainerHotels>
-        </>
+        </> : ''
       }
-      {selectedHotel !== 0 && (
+      {(showHotelResume === false && selectedHotel !== 0) && (
         <RoomsContainer>
-          <SubTitles>Ótima pedida! Agora escolha seu quarto</SubTitles>
+          <SubTitles style={{ 'color': '#8e8e8e', 'margin-top': '20px' }}>Ótima pedida! Agora escolha seu quarto</SubTitles>
           <RoomsStyled>
             {rooms?.map((room, index) => (
               <Room room={room} key={index} fullRooms={fullRooms} index={index} handleClickOnRoom={handleClickOnRoom} selectedRoom={selectedRoom} />
@@ -100,55 +137,20 @@ export default function Hotel() {
           </RoomsStyled>
         </RoomsContainer>
       )}
-      {selectedRoom ? <ReserveButton style={{ 'margin-top': '46px' }} onClick={() => console.log(selectedRoom)}>RESERVAR QUARTO</ReserveButton> : ''}
+      {(showHotelResume === false && selectedRoom) ? <ReserveButton style={{ 'margin-top': '46px' }} onClick={() => showResume()}>RESERVAR QUARTO</ReserveButton> : ''}
+
+      {showHotelResume === true ? <>
+        <SubTitles style={{ 'color': '#8e8e8e', 'margin-top': '20px' }}>Você já escolheu seu quarto: </SubTitles>
+        <HotelCardStyled>
+          <img src={hotels[selectedHotel].image} alt="hotel" />
+          <h2>{hotels[selectedHotel].name}</h2>
+          <h3>Quarto reservado</h3>
+          <h4>{roomName} ({selectedRoomType})</h4>
+          <h3>Pessoas no seu quarto</h3>
+          <h4>{selectedRoomCapacity}{guests}</h4>
+        </HotelCardStyled>
+        <ReserveButton style={{ 'margin-top': '46px' }} onClick={() => console.log('Alterar quarto')}>TROCAR DE QUARTO</ReserveButton>
+      </> : ''}
     </>
   );
 }
-
-const SubTitles = styled(Typography)`
-  margin-bottom: 20px !important;
-`;
-
-const Title = styled.h1`
-  font-style: normal;
-  font-weight: 400;
-  font-size: 34px;
-  line-height: 40px;
-  color: #000000;
-`;
-
-const ContainerAlert = styled.div`
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  h2 {
-    width: 600px;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 20px;
-    line-height: 23px;
-    text-align: center;
-    color: #8e8e8e;
-  }
-`;
-
-const ContainerHotels = styled.div`
-  display: flex;
-  width: 860px;
-  flex-wrap: wrap;
-  align-items: center;
-`;
-
-const RoomsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-top: 52px;
-`;
-
-const RoomsStyled = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: 32px;
-  gap: 17px;
-`;

@@ -15,7 +15,7 @@ export default function HotelCard({ hotel, selectHotel, selectedHotel }) {
   );
 }
 
-const HotelCardStyled = styled.div`
+export const HotelCardStyled = styled.div`
   width: 196px;
   min-height: 300px;
   background-color: ${(props) => (props.selectedHotel === props.hotelId ? '#FFEED2' : '#EBEBEB')};
