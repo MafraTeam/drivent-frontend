@@ -56,7 +56,7 @@ export default function Hotel() {
   }
 
   function handleClickOnRoom(roomIndex) {
-    if (!fullRooms.includes(roomIndex)) {
+    if (!fullRooms.includes(roomIndex+1)) {
       setSelectedRoom(roomIndex);
     }
   }
