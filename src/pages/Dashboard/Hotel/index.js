@@ -6,6 +6,7 @@ import Room from '../../../components/Room/Room';
 import hotelApi from '../../../services/hotelsApi';
 import ticketApi from '../../../services/ticketApi';
 import HotelCard from '../../../components/Hotel/HotelCard';
+import { ReserveButton } from '../../../components/Dashboard/Payments';
 
 export default function Hotel() {
   const [ticket, setTicket] = useState();
@@ -38,7 +39,7 @@ export default function Hotel() {
     const newList = [];
     for (let i = 0; i < rooms.length; i++) {
       if (rooms[i].capacity === rooms[i].takenPlaces) {
-        newList.push(rooms[i].id);
+        newList.push(rooms[i].id - 1);
       }
     }
     setFullRooms(newList);
@@ -49,7 +50,6 @@ export default function Hotel() {
       const RoomData = await hotelApi.getHotelRooms(token, id);
       setSelectedHotel(id);
       setRooms(RoomData);
-      console.log(RoomData);
     } catch (error) {
       console.log(error.message);
     }
@@ -100,6 +100,7 @@ export default function Hotel() {
           </RoomsStyled>
         </RoomsContainer>
       )}
+      {selectedRoom ? <ReserveButton style={{ 'margin-top': '46px' }} onClick={() => console.log(selectedRoom)}>RESERVAR QUARTO</ReserveButton> : ''}
     </>
   );
 }

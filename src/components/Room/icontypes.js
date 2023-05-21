@@ -16,8 +16,14 @@ const TakenPlace = styled(IoPerson)`
   font-size: 20px;
 `;
 
+const TakenPlaceInFullRoom= styled(IoPerson)`
+  color: #8C8C8C;
+  font-size: 20px;
+`;
+
 export const place = {
   available: <FreePlace />,
   selected: <SelectedPlace />,
-  unavailable: <TakenPlace />
+  unavailable: <TakenPlace />,
+  unavailableAndFull: <TakenPlaceInFullRoom />,
 };
