@@ -8,12 +8,13 @@ export const OptionBox = styled.div`
   box-sizing: border-box;
   width: 145px;
   height: 145px;
-  border: 1px solid #CECECE;
+  border: 1px solid #cecece;
   border-radius: 20px;
   font-family: 'Roboto';
   margin-right: 24px;
+  cursor: pointer;
 
-  h1{
+  h1 {
     font-weight: 400;
     font-size: 17px;
     text-align: center;
@@ -21,11 +22,11 @@ export const OptionBox = styled.div`
     margin-bottom: 5px;
   }
 
-  h2{
-  font-weight: 400;
-  font-size: 15px;
-  line-height: 16px;
-  text-align: center;
-  color: #898989;
+  h2 {
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 16px;
+    text-align: center;
+    color: #898989;
   }
 `;
