@@ -40,6 +40,8 @@ export default function Room({ room, fullRooms, index, selectedRoom, handleClick
             index={index}
             isItTaken={false}
             selectedRoom={selectedRoom}
+            roomId={id}
+            freePlacesInRoom={capacity-takenPlaces}
           />))}
 
         {takenPlacesIcons.map((item, index) => (

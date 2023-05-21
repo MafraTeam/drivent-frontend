@@ -59,6 +59,7 @@ export default function Hotel() {
     if (!fullRooms.includes(roomIndex+1)) {
       setSelectedRoom(roomIndex);
     }
+    console.log(selectedRoom);
   }
 
   useEffect(() => {
