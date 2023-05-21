@@ -2,15 +2,16 @@ import { useState } from 'react';
 import { place } from './icontypes.js';
 import { useEffect } from 'react';
 
-export default function Icon({ index, isItTaken, selectedRoom, fullRooms, roomId }) {
+export default function Icon({ index, isItTaken, selectedRoom, fullRooms, roomId, freePlacesInRoom }) {
   const [iconType, setIconType] = useState(place.available);
 
   useEffect(() => {
-    if (selectedRoom === index) {
-      setIconType(place.selected);
-    }
     if (!isItTaken) {
-      setIconType(place.available);
+      if (selectedRoom === roomId - 1 & index === freePlacesInRoom - 1) {
+        setIconType(place.selected);
+      } else {
+        setIconType(place.available);
+      }
     }
     if (isItTaken) {
       if (fullRooms.includes(roomId)) {
@@ -19,10 +20,9 @@ export default function Icon({ index, isItTaken, selectedRoom, fullRooms, roomId
         setIconType(place.unavailable);
       }
     }
-    console.log(fullRooms);
-  }, []);
+  }, [selectedRoom]);
 
   return (
-    <div>{iconType}</div>
+    <div onClick={() => console.log(index)}>{iconType}</div>
   );
 }
