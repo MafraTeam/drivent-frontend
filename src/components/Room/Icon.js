@@ -2,23 +2,22 @@ import { useState } from 'react';
 import { place } from './icontypes.js';
 import { useEffect } from 'react';
 
-export default function Icon({ index, handleClick, selected, availablePlacesInRoom }) {
+export default function Icon({ index, isItTaken }) {
   const [iconType, setIconType] = useState(place.available);
 
   useEffect(() => {
-    //Se escolher 1a opçao de mapear:
-    if (selected === index) {
-      setIconType(place.selected);
-    }
-    if (availablePlacesInRoom[index] === true) {
+    // if (selectedRoom === index) {
+    //   setIconType(place.selected);
+    // }
+    if (!isItTaken) {
       setIconType(place.available);
     }
-    if (availablePlacesInRoom[index] === false) {
+    if (isItTaken) {
       setIconType(place.unavailable);
     }
-  }, [selected]);
+  }, []);
 
   return (
-    <div onClick={() => handleClick(index)}>{iconType}</div>
+    <div onClick={() => console.log(index)}>{iconType}</div>
   );
 }

@@ -3,19 +3,19 @@ import Icon from '../../components/Room/Icon.js';
 import { useState, useEffect } from 'react';
 
 export default function Room({ room, fullRooms, index, selectedRoom, handleClickOnRoom }) {
-  const { name, capacity } = room;
-  const icons = [];
-  for (let i = 0; i < capacity; i++) {
-    icons.push(1);
+  const { name, capacity, takenPlaces } = room;
+  const freePlaceIcons = [];
+  const takenPlacesIcons = [];
+
+  for (let i = 0; i < takenPlaces; i++) {
+    takenPlacesIcons.push(1);
   }
-  const [selectedPlace, setSelectedPlace] = useState('');
+
+  for (let i = 0; i < (capacity - takenPlaces); i++) {
+    freePlaceIcons.push(1);
+  }
+
   const [background, setBackground] = useState('white');
-  //1)
-  const availablePlacesInRoom = {         //mock 
-    1: false,
-    2: true,
-    3: true
-  };
 
   useEffect(() => {
     if (fullRooms.includes(index)) {
@@ -27,28 +27,25 @@ export default function Room({ room, fullRooms, index, selectedRoom, handleClick
     if (selectedRoom === index) {
       setBackground('#FFEED2');
     }
-  }, [selectedRoom]);
-
-  function handleClick(placeIndex) {
-    if (selectedPlace === placeIndex) {
-      setSelectedPlace('');
-    } else {
-      setSelectedPlace(placeIndex);
-    }
-  }
+  }, [selectedRoom, fullRooms]);
 
   return (
     <RoomStyled colorprop={background} onClick={() => handleClickOnRoom(index)}>
       <h1>{name.slice(-3)}</h1>
       <div style={{ 'display': 'flex' }}>
-        {icons.map((item, index) => (
+        {takenPlacesIcons.map((item, index) => (
           <Icon
             key={index}
             index={index}
-            handleClick={handleClick}
-            selected={selectedPlace}
-            availablePlacesInRoom={availablePlacesInRoom}
+            isItTaken={true}
           />))}
+        {freePlaceIcons.map((item, index) => (
+          <Icon
+            key={index}
+            index={index}
+            isItTaken={false}
+          />))}
+
       </div>
     </RoomStyled>
   );

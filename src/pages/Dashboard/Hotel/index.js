@@ -56,7 +56,9 @@ export default function Hotel() {
   }
 
   function handleClickOnRoom(roomIndex) {
-    setSelectedRoom(roomIndex);
+    if (!fullRooms.includes(roomIndex)) {
+      setSelectedRoom(roomIndex);
+    }
   }
 
   useEffect(() => {
@@ -93,7 +95,7 @@ export default function Hotel() {
           <SubTitles>Ótima pedida! Agora escolha seu quarto</SubTitles>
           <RoomsStyled>
             {rooms?.map((room, index) => (
-              <Room room={room} key={index} fullRooms={fullRooms} index={index} handleClickOnRoom={handleClickOnRoom} selectedRoom={selectedRoom}/>
+              <Room room={room} key={index} fullRooms={fullRooms} index={index} handleClickOnRoom={handleClickOnRoom} selectedRoom={selectedRoom} />
             ))}
           </RoomsStyled>
         </RoomsContainer>
