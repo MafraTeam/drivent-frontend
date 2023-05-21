@@ -38,7 +38,7 @@ export default function Hotel() {
     const newList = [];
     for (let i = 0; i < rooms.length; i++) {
       if (rooms[i].capacity === rooms[i].takenPlaces) {
-        newList.push(rooms[i].id);
+        newList.push(rooms[i].id-1);
       }
     }
     setFullRooms(newList);
@@ -49,17 +49,15 @@ export default function Hotel() {
       const RoomData = await hotelApi.getHotelRooms(token, id);
       setSelectedHotel(id);
       setRooms(RoomData);
-      console.log(RoomData);
     } catch (error) {
       console.log(error.message);
     }
   }
 
   function handleClickOnRoom(roomIndex) {
-    if (!fullRooms.includes(roomIndex+1)) {
+    if (!fullRooms.includes(roomIndex)) {
       setSelectedRoom(roomIndex);
     }
-    console.log(selectedRoom);
   }
 
   useEffect(() => {

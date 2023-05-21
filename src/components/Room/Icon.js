@@ -7,7 +7,7 @@ export default function Icon({ index, isItTaken, selectedRoom, fullRooms, roomId
 
   useEffect(() => {
     if (!isItTaken) {
-      if (selectedRoom === roomId - 1 & index === freePlacesInRoom - 1) {
+      if (selectedRoom === roomId -1 & index === freePlacesInRoom - 1) {
         setIconType(place.selected);
       } else {
         setIconType(place.available);

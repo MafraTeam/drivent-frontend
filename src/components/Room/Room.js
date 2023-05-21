@@ -18,10 +18,10 @@ export default function Room({ room, fullRooms, index, selectedRoom, handleClick
   const [background, setBackground] = useState('white');
 
   useEffect(() => {
-    if (fullRooms.includes(index + 1)) {
+    if (fullRooms.includes(index)) {
       setBackground('#E9E9E9');
     }
-    if (!fullRooms.includes(index + 1)) {
+    if (!fullRooms.includes(index)) {
       setBackground('#00000');
     }
     if (selectedRoom === index) {
@@ -41,7 +41,7 @@ export default function Room({ room, fullRooms, index, selectedRoom, handleClick
             isItTaken={false}
             selectedRoom={selectedRoom}
             roomId={id}
-            freePlacesInRoom={capacity-takenPlaces}
+            freePlacesInRoom={capacity - takenPlaces}
           />))}
 
         {takenPlacesIcons.map((item, index) => (
