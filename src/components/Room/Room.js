@@ -3,7 +3,7 @@ import Icon from '../../components/Room/Icon.js';
 import { useState, useEffect } from 'react';
 
 export default function Room({ room, fullRooms, index, selectedRoom, handleClickOnRoom }) {
-  const { name, capacity, takenPlaces } = room;
+  const { id, name, capacity, takenPlaces } = room;
   const freePlaceIcons = [];
   const takenPlacesIcons = [];
 
@@ -18,10 +18,10 @@ export default function Room({ room, fullRooms, index, selectedRoom, handleClick
   const [background, setBackground] = useState('white');
 
   useEffect(() => {
-    if (fullRooms.includes(index)) {
+    if (fullRooms.includes(index + 1)) {
       setBackground('#E9E9E9');
     }
-    if (!fullRooms.includes(index)) {
+    if (!fullRooms.includes(index + 1)) {
       setBackground('#00000');
     }
     if (selectedRoom === index) {
@@ -33,17 +33,22 @@ export default function Room({ room, fullRooms, index, selectedRoom, handleClick
     <RoomStyled colorprop={background} onClick={() => handleClickOnRoom(index)}>
       <h1>{name.slice(-3)}</h1>
       <div style={{ 'display': 'flex' }}>
-        {takenPlacesIcons.map((item, index) => (
-          <Icon
-            key={index}
-            index={index}
-            isItTaken={true}
-          />))}
+
         {freePlaceIcons.map((item, index) => (
           <Icon
             key={index}
             index={index}
             isItTaken={false}
+            selectedRoom={selectedRoom}
+          />))}
+
+        {takenPlacesIcons.map((item, index) => (
+          <Icon
+            key={index}
+            index={index}
+            isItTaken={true}
+            fullRooms={fullRooms}
+            roomId={id}
           />))}
 
       </div>
