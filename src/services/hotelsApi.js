@@ -10,7 +10,7 @@ async function getHotels(token) {
   return promise.data;
 }
 
-async function getHotelRooms(id, token) {
+async function getHotelRooms(token, id) {
   const promise = await api.get(`/hotels/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,

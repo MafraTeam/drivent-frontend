@@ -32,7 +32,7 @@ export default function HotelCard({ hotel, selectHotel, selectedHotel }) {
   }
 
   async function getCapacityByHotel() {
-    const hotelRooms = await hotelApi.getHotelRooms(id, token);
+    const hotelRooms = await hotelApi.getHotelRooms(token, id);
     const bookings = await bookingApi.getBookingsByHotel(id, token);
 
     getInfos(hotelRooms);
