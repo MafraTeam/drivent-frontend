@@ -30,24 +30,7 @@ export default function Hotel() {
   const [guests, setGuests] = useState('');
   const [roomName, setRoomName] = useState('');
   const [booking, setBooking] = useState();
-  const [podeMostrar, setPodeMostrar] = useState(false);
   const [isChange, setIsChange] = useState(false);
-  console.log({
-    ticket,
-    hotels,
-    selectedHotel,
-    rooms,
-    fullRooms,
-    selectedRoom,
-    showHotelResume,
-    selectedRoomType,
-    selectedRoomCapacity,
-    guests,
-    roomName,
-    booking,
-    podeMostrar,
-    isChange,
-  });
 
   async function getTicket() {
     try {
