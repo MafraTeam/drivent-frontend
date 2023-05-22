@@ -55,20 +55,12 @@ export default function Hotel() {
       const bookingData = await bookingApi.getBookingByUser(token);
       if (bookingData) {
         const RoomData = await hotelApi.getHotelRooms(token, bookingData.Room.hotelId);
-        const setagem = await setBookingsFunction(bookingData, RoomData);
-        showResume();
+        setBooking(bookingData);
+        setSelectedHotel(bookingData.Room.hotelId);
+        setRooms(RoomData);
+        setSelectedRoom(bookingData.Room.id);
+        showResume(RoomData, bookingData);
       }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  async function setBookingsFunction(bookingData, RoomData) {
-    try {
-      setBooking(bookingData);
-      setSelectedHotel(bookingData.Room.hotelId);
-      setRooms(RoomData);
-      setSelectedRoom(bookingData.Room.id);
     } catch (error) {
       console.log(error);
     }
@@ -81,7 +73,6 @@ export default function Hotel() {
         newList.push(rooms[i].id);
       }
     }
-    console.log(newList);
     setFullRooms(newList);
   }
 
@@ -104,18 +95,16 @@ export default function Hotel() {
   }
 
   async function postBooking() {
-    const reservation = await bookingApi.bookingRoom(selectedRoom, token);
-    console.log(reservation);
+    await bookingApi.bookingRoom(selectedRoom, token);
+    getBooking();
   }
 
-  async function showResume() {
-    const objroom = rooms.filter((room) => room.id === selectedRoom);
+  async function showResume(RoomData, bookingData) {
+    const objroom = RoomData.filter((room) => room.id === bookingData.Room.id);
     const room = objroom[0]?.name.replace('Room', '');
     setRoomName(room);
     const otherPeople = objroom[0]?.capacity - 1;
-    if (otherPeople !== 0) {
-      setGuests(otherPeople);
-    }
+    setGuests(otherPeople);
     const capacity = objroom[0]?.capacity;
     if (capacity === 1) {
       setSelectedRoomType('Single');
@@ -139,9 +128,9 @@ export default function Hotel() {
 
   async function changeRoom() {
     try {
-      const promise = await bookingApi.changeBooking(booking.id, selectedRoom, token);
+      await bookingApi.changeBooking(booking.id, selectedRoom, token);
+      getBooking();
       setIsChange(false);
-      showResume();
     } catch (error) {
       console.log(error.message);
     }
@@ -193,6 +182,7 @@ export default function Hotel() {
                 index={room.id}
                 handleClickOnRoom={handleClickOnRoom}
                 selectedRoom={selectedRoom}
+                selectedHotel={selectedHotel}
               />
             ))}
           </RoomsStyled>
@@ -202,7 +192,6 @@ export default function Hotel() {
         <ReserveButton
           style={{ 'margin-top': '46px' }}
           onClick={() => {
-            showResume();
             postBooking();
           }}
         >
@@ -213,7 +202,6 @@ export default function Hotel() {
         <ReserveButton
           style={{ 'margin-top': '46px' }}
           onClick={() => {
-            showResume();
             changeRoom();
           }}
         >
@@ -221,7 +209,7 @@ export default function Hotel() {
         </ReserveButton>
       )}
 
-      {showHotelResume === true ? (
+      {showHotelResume === true && booking ? (
         <>
           <SubTitles style={{ color: '#8e8e8e', 'margin-top': '20px' }}>Você já escolheu seu quarto: </SubTitles>
           <HotelCardStyled>
@@ -234,7 +222,7 @@ export default function Hotel() {
             <h3>Pessoas no seu quarto</h3>
             <h4>
               {selectedRoomCapacity}
-              {guests}
+              {guests !== 0 ? guests : ''}
             </h4>
           </HotelCardStyled>
           <ReserveButton style={{ 'margin-top': '46px' }} onClick={() => returnToHotels()}>
