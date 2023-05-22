@@ -36,10 +36,21 @@ async function changeBooking(bookingId, roomId, token) {
   return promise.data;
 }
 
+async function getBookingsByHotel(hotelId, token) {
+  const promise = await api.get(`/hotels/bookings/${hotelId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return promise;
+}
+
 const bookingApi = {
   getBookingByUser,
   bookingRoom,
-  changeBooking
+  changeBooking,
+  getBookingsByHotel
 };
 
 export default bookingApi;
