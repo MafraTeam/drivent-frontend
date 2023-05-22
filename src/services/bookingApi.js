@@ -37,7 +37,7 @@ async function changeBooking(bookingId, roomId, token) {
 }
 
 async function getBookingsByHotel(hotelId, token) {
-  const promise = await api.get(`/hotels/bookings/${hotelId}`, {
+  const promise = await api.get(`/booking/${hotelId}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

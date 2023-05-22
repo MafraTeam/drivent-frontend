@@ -81,6 +81,7 @@ export default function Hotel() {
         newList.push(rooms[i].id);
       }
     }
+    console.log(newList);
     setFullRooms(newList);
   }
 
@@ -90,6 +91,7 @@ export default function Hotel() {
       const RoomData = await hotelApi.getHotelRooms(token, id);
       setSelectedHotel(id);
       setRooms(RoomData);
+      checkCapacity();
     } catch (error) {
       console.log(error.message);
     }
