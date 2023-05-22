@@ -55,7 +55,7 @@ export default function Hotel() {
       const bookingData = await bookingApi.getBookingByUser(token);
       if (bookingData) {
         const RoomData = await hotelApi.getHotelRooms(token, bookingData.Room.hotelId);
-        const setagem = await setBookingsFunction(bookingData, RoomData)
+        const setagem = await setBookingsFunction(bookingData, RoomData);
         showResume();
       }
     } catch (error) {
@@ -63,7 +63,7 @@ export default function Hotel() {
     }
   }
 
-  async function setBookingsFunction(bookingData, RoomData){
+  async function setBookingsFunction(bookingData, RoomData) {
     try {
       setBooking(bookingData);
       setSelectedHotel(bookingData.Room.hotelId);

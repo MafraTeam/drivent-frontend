@@ -1,16 +1,66 @@
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import useToken from '../../hooks/useToken';
+import hotelApi from '../../services/hotelsApi';
+import bookingApi from '../../services/bookingApi';
 
 export default function HotelCard({ hotel, selectHotel, selectedHotel }) {
   const { id, name, image } = hotel;
+  const [capacity, setCapacity] = useState(0);
+  const [infos, setInfos] = useState('');
+  const token = useToken();
+
+  function getInfos(rooms) {
+    let accomodations = [];
+
+    let single = false;
+    let double = false;
+    let triple = false;
+
+    rooms.forEach((room) => {
+      if (room.capacity === 1) single = true;
+      if (room.capacity === 2) double = true;
+      if (room.capacity === 3) triple = true;
+    });
+
+    if (single) accomodations.push('Single');
+    if (double) accomodations.push('Double');
+    if (triple) accomodations.push('Triple');
+    let infos = accomodations.join(', ');
+
+    setInfos(infos);
+  }
+
+  async function getCapacityByHotel() {
+    const hotelRooms = await hotelApi.getHotelRooms(id, token);
+    const bookings = await bookingApi.getBookingsByHotel(id, token);
+
+    getInfos(hotelRooms);
+
+    let totalCapacity = 0;
+    hotelRooms.forEach(element => {
+      totalCapacity += element.capacity;
+    });
+
+    let reservedRooms = 0;
+    bookings.data.forEach(element => {
+      reservedRooms += element._count.Booking;
+    });
+
+    setCapacity(totalCapacity - reservedRooms);
+  }
+  useEffect(() => {
+    getCapacityByHotel();
+  }, []);
 
   return (
     <HotelCardStyled onClick={() => selectHotel(id)} selectedHotel={selectedHotel} hotelId={id}>
       <img src={image} alt="hotel" />
       <h2>{name}</h2>
       <h3>Tipos de acomodação</h3>
-      <h4>Single, Double e Triple</h4>
+      <h4>{infos}</h4>
       <h3>Vagas Disponiveis</h3>
-      <h4>Nº total de vagas disponiveis</h4>
+      <h4>{capacity}</h4>
     </HotelCardStyled>
   );
 }
