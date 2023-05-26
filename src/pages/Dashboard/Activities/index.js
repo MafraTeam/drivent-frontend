@@ -33,11 +33,11 @@ export default function Activities() {
           <h2>Você precisa ter confirmado pagamento antes de fazer a escolha das atividades</h2>
         </ContainerAlert>
       )}
-      {(ticket?.status === 'PAID' && !ticket?.TicketType?.isRemote) && (
+      {(ticket?.status === 'PAID' && ticket?.TicketType?.isRemote) ? (
         <ContainerAlert>
           <h2>Sua modalidade de ingresso não necessita escolher atividades. Você terá acesso a todas as atividades.</h2>
         </ContainerAlert>
-      )}
+      ) : ''}
       {!isPaid ? '' : <>
         <SubTitles style={{ color: '#8e8e8e', 'margin-top': '20px', 'font-size': '20px' }}>Primeiro, filtre pelo dia do evento: </SubTitles>
       </>
