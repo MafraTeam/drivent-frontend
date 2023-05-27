@@ -146,3 +146,10 @@ export const ConfirmationIcon = styled(AiFillCheckCircle)`
   width: 50px;
   height: 50px;
 `;
+
+export const DaysBox = styled.div` 
+  display: flex;
+  justify-content: space-around;
+  width:800px;
+`;
+
