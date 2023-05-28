@@ -11,15 +11,19 @@ export default function Activities() {
   const token = useToken();
   const [isPaid, setIsPaid] = useState(true);
   const [activities, setActivities] = useState([]);
+  const [selectedDay, setSelectedDay] = useState('');
 
   async function getActivities() {
     try {
       const activitiesData = await activityApi.getActivities(token);
       setActivities(activitiesData);
-      console.log(activitiesData);
     } catch (error) {
       console.log(error.message);
     }
+  };
+
+  function handleClickOnDay(index) {
+    setSelectedDay(index);
   };
 
   const [ticket, setTicket] = useState();
@@ -58,7 +62,7 @@ export default function Activities() {
         <SubTitles style={{ color: '#8e8e8e', 'margin-top': '20px', 'font-size': '20px' }}>Primeiro, filtre pelo dia do evento: </SubTitles>
         <DaysBox>
           {activities.map((item, index) => (
-            <DayButton item={item} />
+            <DayButton item={item} index={index} selectedDay={selectedDay} handleClickOnDay={handleClickOnDay} />
           ))}
         </DaysBox>
       </>
