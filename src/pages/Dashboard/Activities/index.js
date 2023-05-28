@@ -5,6 +5,7 @@ import ticketApi from '../../../services/ticketApi';
 import { ContainerAlert } from '../../../components/Dashboard/Activities';
 import useToken from '../../../hooks/useToken';
 import activityApi from '../../../services/activitiesApi';
+import DayButton from '../../../components/Activities/DayButton';
 
 export default function Activities() {
   const token = useToken();
@@ -57,7 +58,7 @@ export default function Activities() {
         <SubTitles style={{ color: '#8e8e8e', 'margin-top': '20px', 'font-size': '20px' }}>Primeiro, filtre pelo dia do evento: </SubTitles>
         <DaysBox>
           {activities.map((item, index) => (
-            <ReserveButton> {item.dataFormatada.slice(0, item.dataFormatada.length-5)}</ReserveButton>
+            <DayButton item={item} />
           ))}
         </DaysBox>
       </>
