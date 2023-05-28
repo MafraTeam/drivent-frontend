@@ -1,14 +1,29 @@
 import { SubTitles, Title } from '../../../components/Hotel/HotelStyle';
+import { DaysBox, ReserveButton } from '../../../components/Dashboard/Payments';
 import { useEffect, useState } from 'react';
 import ticketApi from '../../../services/ticketApi';
 import { ActivitiesDataContainer, ContainerAlert, ActivitiesPerDayContainer } from '../../../components/Dashboard/Activities';
 import useToken from '../../../hooks/useToken';
-import activitiesApi from '../../../services/activitiesApi';
-import ActivitiesPerDay from '../../../components/Dashboard/Activities/activitiesDay';
-import ActivitiesSelector from '../../../components/Dashboard/Activities/activitiesSelector';
+import activityApi from '../../../services/activitiesApi';
+import DayButton from '../../../components/Activities/DayButton';
 
 export default function Activities() {
   const token = useToken();
+  const [isPaid, setIsPaid] = useState(true);
+
+  async function getActivities() {
+    try {
+      const activitiesData = await activityApi.getActivities(token);
+      setActivities(activitiesData);
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  function handleClickOnDay(index) {
+    setSelectedDay(index);
+  };
+
   const [ticket, setTicket] = useState();
   const [activities, setActivities] = useState();
   const [selectedDay, setSelectedDay] = useState();
@@ -67,34 +82,16 @@ export default function Activities() {
           <h2>Sua modalidade de ingresso não necessita escolher atividades. Você terá acesso a todas as atividades.</h2>
         </ContainerAlert>
       )}
-      {ticket?.status === 'PAID' && !ticket?.TicketType?.isRemote && (
-        <>
-          <SubTitles style={{ color: '#8e8e8e', 'margin-top': '20px', 'font-size': '20px' }}>
-            Primeiro, filtre pelo dia do evento:{' '}
-          </SubTitles>
-          <ActivitiesDataContainer>
-            {activities?.map((activities, index) => (
-              <ActivitiesSelector
-                key={index}
-                id={index}
-                selectedDay={selectedDay}
-                text={activities.dataFormatada?.replace('-', '/').slice(0, -5)}
-                day={activities.dataFormatada?.split(", ")[1]}
-                setSelectedDay={setSelectedDay}
-                toggleSelectedDay={toggleSelectedDay}
-              />
-            ))}
-          </ActivitiesDataContainer>
-        </>
-      )}
-      {ticket?.status === 'PAID' && !ticket?.TicketType?.isRemote && activitiesDay && (
-        <ActivitiesPerDayContainer>
-          {/* <ActivitiesPerDay /> */}
-          {activitiesDay?.map((activities, index) => (
-            <ActivitiesPerDay key={index} activities={activities}/>
+      {!isPaid ? '' : <>
+        <SubTitles style={{ color: '#8e8e8e', 'margin-top': '20px', 'font-size': '20px' }}>Primeiro, filtre pelo dia do evento: </SubTitles>
+        <DaysBox>
+          {activities.map((item, index) => (
+            <DayButton item={item} index={index} selectedDay={selectedDay} handleClickOnDay={handleClickOnDay} />
           ))}
-        </ActivitiesPerDayContainer>
-      )}
+        </DaysBox>
+      </>
+      }
     </>
   );
 }
+

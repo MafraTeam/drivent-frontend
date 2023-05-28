@@ -1,6 +1,6 @@
 import api from './api';
 
-async function getAllActivities(token) {
+async function getActivities(token) {
   const promise = await api.get('/activities', {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -20,9 +20,9 @@ async function getAllActivitiesPerDay(day, token) {
   return promise.data;
 }
 
-const activitiesApi = {
-  getAllActivities,
+const activityApi = {
+  getActivities,
   getAllActivitiesPerDay,
 };
 
-export default activitiesApi;
+export default activityApi;
