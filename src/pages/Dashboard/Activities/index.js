@@ -1,4 +1,3 @@
-import styled from 'styled-components';
 import { SubTitles, Title } from '../../../components/Hotel/HotelStyle';
 import { DaysBox, ReserveButton } from '../../../components/Dashboard/Payments';
 import { useEffect, useState } from 'react';
@@ -57,7 +56,9 @@ export default function Activities() {
       {!isPaid ? '' : <>
         <SubTitles style={{ color: '#8e8e8e', 'margin-top': '20px', 'font-size': '20px' }}>Primeiro, filtre pelo dia do evento: </SubTitles>
         <DaysBox>
-          <ReserveButton> Sexta</ReserveButton>
+          {activities.map((item, index) => (
+            <ReserveButton> {item.dataFormatada.slice(0, item.dataFormatada.length-5)}</ReserveButton>
+          ))}
         </DaysBox>
       </>
       }
