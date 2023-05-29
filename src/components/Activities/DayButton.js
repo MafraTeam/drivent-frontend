@@ -4,19 +4,23 @@ import styled from 'styled-components';
 
 export default function DayButton({ item, index, selectedDay, handleClickOnDay }) {
   const [background, setBackground] = useState('#e0e0e0');
+  const day = item.dataFormatada.split(', ')[1];
 
   useEffect(() => {
     if (selectedDay === index) {
       setBackground('#FFD37D');
-    }else{
+    } else {
       setBackground('#e0e0e0');
     }
   }, [selectedDay]);
 
   return (
-    <DayButtonSty colorprop={background} onClick={() => handleClickOnDay(index)}> {item.dataFormatada.slice(0, item.dataFormatada.length - 5)}</DayButtonSty>
+    <DayButtonSty colorprop={background} onClick={() => handleClickOnDay(index, day)}>
+      {' '}
+      {item.dataFormatada.slice(0, item.dataFormatada.length - 5).replace('-', '/')}
+    </DayButtonSty>
   );
-};
+}
 
 const DayButtonSty = styled.div`
   width: 162px;
@@ -24,7 +28,7 @@ const DayButtonSty = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background:  ${(props) => props.colorprop};
+  background: ${(props) => props.colorprop};
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.25);
   border-radius: 4px;
   font-family: 'Roboto';

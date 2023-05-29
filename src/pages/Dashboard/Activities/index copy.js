@@ -1,12 +1,11 @@
 import { SubTitles, Title } from '../../../components/Hotel/HotelStyle';
-import { DaysBox } from '../../../components/Dashboard/Payments';
 import { useEffect, useState } from 'react';
 import ticketApi from '../../../services/ticketApi';
-import { ContainerAlert, ActivitiesPerDayContainer } from '../../../components/Dashboard/Activities/style';
-import ActivitiesPerDay from '../../../components/Dashboard/Activities/activitiesDay';
+import { ActivitiesDataContainer, ContainerAlert, ActivitiesPerDayContainer } from '../../../components/Dashboard/Activities';
 import useToken from '../../../hooks/useToken';
-import activityApi from '../../../services/activitiesApi';
-import DayButton from '../../../components/Activities/DayButton';
+import activitiesApi from '../../../services/activitiesApi';
+import ActivitiesPerDay from '../../../components/Dashboard/Activities/activitiesDay';
+import ActivitiesSelector from '../../../components/Dashboard/Activities/activitiesSelector';
 
 export default function Activities() {
   const token = useToken();
@@ -14,7 +13,6 @@ export default function Activities() {
   const [activities, setActivities] = useState();
   const [selectedDay, setSelectedDay] = useState();
   const [activitiesDay, setActivitiesDay] = useState();
-  const [madeEnroll, setMadeEnroll] = useState(false);
 
   async function getTicket() {
     try {
@@ -28,7 +26,7 @@ export default function Activities() {
 
   async function getActivities() {
     try {
-      const activitiesData = await activityApi.getActivities(token);
+      const activitiesData = await activitiesApi.getAllActivities(token);
       setActivities(activitiesData);
       console.log(activitiesData);
     } catch (error) {
@@ -38,29 +36,17 @@ export default function Activities() {
 
   async function getActivitiesPerDay(day) {
     try {
-      const activitiesPerDayData = await activityApi.getAllActivitiesPerDay(day, token);
+      const activitiesPerDayData = await activitiesApi.getAllActivitiesPerDay(day, token);
       setActivitiesDay(activitiesPerDayData);
-      console.log(activitiesPerDayData);
+      console.log(activitiesPerDayData)
     } catch (error) {
-      console.log(error.message);
+      console.log(error.message)
     }
   }
 
-  function handleClickOnDay(index, day) {
+  function toggleSelectedDay(index, day) {
     setSelectedDay(index);
     getActivitiesPerDay(day);
-    setMadeEnroll(false);
-  }
-
-  async function subscribedToActivity(activityId) {
-    try {
-      const activityEnrollData = await activityApi.enrollOnActivity(activityId, token);
-      console.log(activityEnrollData);
-      setMadeEnroll(true);
-      setSelectedDay();
-    } catch (error) {
-      console.log(error.message);
-    }
   }
 
   useEffect(() => {
@@ -86,33 +72,28 @@ export default function Activities() {
           <SubTitles style={{ color: '#8e8e8e', 'margin-top': '20px', 'font-size': '20px' }}>
             Primeiro, filtre pelo dia do evento:{' '}
           </SubTitles>
-          <DaysBox>
-            {activities?.map((item, index) => (
-              <DayButton
+          <ActivitiesDataContainer>
+            {activities?.map((activities, index) => (
+              <ActivitiesSelector
                 key={index}
-                item={item}
-                index={index}
+                id={index}
                 selectedDay={selectedDay}
-                handleClickOnDay={handleClickOnDay}
+                text={activities.dataFormatada?.replace('-', '/').slice(0, -5)}
+                day={activities.dataFormatada?.split(", ")[1]}
+                setSelectedDay={setSelectedDay}
+                toggleSelectedDay={toggleSelectedDay}
               />
             ))}
-          </DaysBox>
+          </ActivitiesDataContainer>
         </>
       )}
-      {ticket?.status === 'PAID' &&
-        !ticket?.TicketType?.isRemote &&
-        (selectedDay === 0 || selectedDay) &&
-        activitiesDay && (
-          <ActivitiesPerDayContainer>
-            {activitiesDay?.map((activities, index) => (
-              <ActivitiesPerDay key={index} activities={activities} subscribedToActivity={subscribedToActivity} />
-            ))}
-          </ActivitiesPerDayContainer>
-        )}
-      {madeEnroll && (
-        <ContainerAlert>
-          <h2>Parabéns. Você escolheu uma atividade, escolha outra ou vá para o certificado</h2>
-        </ContainerAlert>
+      {ticket?.status === 'PAID' && !ticket?.TicketType?.isRemote && activitiesDay && (
+        <ActivitiesPerDayContainer>
+          {/* <ActivitiesPerDay /> */}
+          {activitiesDay?.map((activities, index) => (
+            <ActivitiesPerDay key={index} activities={activities}/>
+          ))}
+        </ActivitiesPerDayContainer>
       )}
     </>
   );
