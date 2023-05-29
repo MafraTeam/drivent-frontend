@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { IoEnterOutline } from 'react-icons/io5';
 import { AiOutlineCloseCircle, AiOutlineCheckCircle } from 'react-icons/ai';
 
-export default function ActivitiesPerDay({ activities }) {
+export default function ActivitiesPerDay({ activities, subscribedToActivity }) {
   const { id, startDate, finishDate, eventName, localName, vacancies, isSubscribed, subscribed } = activities;
 
   const dataInicio = new Date(startDate);
@@ -27,17 +27,28 @@ export default function ActivitiesPerDay({ activities }) {
   return (
     <>
       <ActivitiesPerDayStyled>
-        <div>
+        <ActivitiesPerDayStyledDiv>
           <h1>{localName}</h1>
-        </div>
-        <ActivitiesContainer isSubscribed={isSubscribed} diffMinutes={diffMinutes} minutosAltura={minutosAltura}>
+        </ActivitiesPerDayStyledDiv>
+        <ActivitiesContainer
+          isSubscribed={isSubscribed}
+          vagas={vagas}
+          diffMinutes={diffMinutes}
+          minutosAltura={minutosAltura}
+          onClick={() => subscribedToActivity(id)}
+        >
           <ActivitiesContainerDiv>
             <h2>{eventName}</h2>
             <h3>
               {horarioInicio} - {horarioFinal}
             </h3>
           </ActivitiesContainerDiv>
-          <VacanciesContainer isSubscribed={isSubscribed} vagas={vagas} diffMinutes={diffMinutes} minutosAltura={minutosAltura}>
+          <VacanciesContainer
+            isSubscribed={isSubscribed}
+            vagas={vagas}
+            diffMinutes={diffMinutes}
+            minutosAltura={minutosAltura}
+          >
             {isSubscribed ? (
               <>
                 <Subscribed />
@@ -69,9 +80,10 @@ const ActivitiesPerDayStyled = styled.div`
   align-items: center;
   margin-top: 60px;
   border: 1px solid #d7d7d7;
-  div {
-    margin-bottom: 13px;
-  }
+`;
+
+const ActivitiesPerDayStyledDiv = styled.div`
+  margin-bottom: 13px;
   h1 {
     font-style: normal;
     font-weight: 400;
@@ -91,6 +103,8 @@ const ActivitiesContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  pointer-events: ${(props) => (props.isSubscribed || props.vagas === 0 ? 'none' : 'normal')};
+  cursor: ${(props) => (props.isSubscribed || props.vagas === 0 ? 'none' : 'pointer')};
   h2 {
     font-style: normal;
     font-weight: 700;
@@ -111,10 +125,13 @@ const ActivitiesContainer = styled.div`
 
 const ActivitiesContainerDiv = styled.div`
   width: 199px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 `;
 
 const VacanciesContainer = styled.div`
-  height: ${({ minutosAltura, diffMinutes }) => minutosAltura(diffMinutes)}px;
+  height: 80%;
   width: 66px;
   display: flex;
   flex-direction: column;
